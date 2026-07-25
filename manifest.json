@@ -1,4 +1,5 @@
 {
+  "id": "/mess-31/",
   "short_name": "Посылы",
   "name": "Посылы",
   "description": "Приложение в помощь для проведения Посылов.",
@@ -16,7 +17,7 @@
       "purpose": "any maskable"
     }
   ],
-  "start_url": "/",
+  "start_url": "/mess-31/",
   "background_color": "#ffffff",
   "theme_color": "#000000",
   "display": "standalone"
