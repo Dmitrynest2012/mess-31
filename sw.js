@@ -23,8 +23,8 @@ const ASSETS = [
   'sound_of_notification.mp3',
   'quatrains_about_the_message.xlsx',
   // КРИТИЧЕСКИ ВАЖНО: Добавляем иконки из manifest.json для валидации PWA
-  '/images/icon-192.png',
-  '/images/icon-512.png'
+  'images/icon-192.png',
+  'images/icon-512.png'
 ];
 
 const EXCEL_FILES = ['data-message.xlsx', 'quatrains_about_the_message.xlsx'];
