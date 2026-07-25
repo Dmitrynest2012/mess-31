@@ -1,0 +1,1599 @@
+/* Определяем CSS-переменные для высоты контейнеров */
+:root {
+    --image-container-height: calc(100vh - 40px);
+    --message-container-height: calc(100vh - (((20% / 1.2) * 0.8) + 80px) - 120px);
+    --flame-container-height: calc(100vh - (((20% / 1.2) * 0.8) + 80px) - 120px + 120px);
+}
+
+/* Импорт шрифта Play из Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Play:wght@400;700&display=swap');
+
+/* Общие стили */
+body {
+    font-family: 'Play', Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #1e1e3f; /* Начальный фон "вне посыла" */
+    color: white;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    transition: background-color 0.5s ease-in-out;
+}
+
+
+/* Контейнер с картинкой */
+.image-container {
+    position: absolute;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #3a3f4b;
+    transition: background-color 0.5s ease-in-out;
+}
+
+#dynamic-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Изображение заполняет контейнер, обрезая края */
+    object-position: center; /* Центрируем изображение по горизонтали и вертикали */
+    display: block;
+    transition: opacity 0.25s ease-in-out;
+}
+
+#dynamic-image.fade {
+    opacity: 0;
+}
+
+/* Стили для #date */
+#date {
+   
+    display: inline-block; /* Для корректной работы transform */
+    transition: font-size 0.3s ease-in-out, color 0.5s ease-in-out; /* Добавляем переход для font-size */
+}
+
+/* Анимация расширения для более длинного текста */
+.date-expanding {
+    animation: expand 0.5s ease-in-out;
+}
+
+/* Анимация сжатия для более короткого текста */
+.date-shrinking {
+    animation: shrink 0.5s ease-in-out;
+}
+
+/* Keyframes для расширения */
+@keyframes expand {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); } /* Увеличиваем до 105% */
+    100% { transform: scale(1); }
+}
+
+/* Keyframes для сжатия */
+@keyframes shrink {
+    0% { transform: scale(1); }
+    50% { transform: scale(0.95); } /* Уменьшаем до 95% */
+    100% { transform: scale(1); }
+}
+
+.posyl-type-gold {
+    color: #ffd700; /* Золотой */
+}
+
+.posyl-type-white {
+    color: white;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.bold-underlined {
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+.white-text {
+    color: white;
+}
+
+.purple-bold {
+    font-weight: bold;
+    color: #d096ff;
+}
+
+/* Бегущий текст названия песни */
+.song-title {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    color: white;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    display: none;
+    opacity: 0.5;
+    animation: marquee 50s linear infinite;
+}
+
+@keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Контейнер с часами и датой */
+.clock-container {
+    text-align: center;
+    background-color: #3a3f4b;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    overflow: hidden; /* Добавляем обрезку содержимого */
+    transition: background-color 0.5s ease-in-out;
+    position: relative;
+}
+
+/* Линия прогресса */
+.progress-line {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    height: 3px;
+    background-color: #ffd700;
+    width: 0;
+    transition: width 1s linear;
+    box-shadow: 
+        0 -2px 5px rgba(255, 215, 0, 0.6), /* Основное свечение вверх */
+        2px 0 3px rgba(255, 215, 0, 0.4), /* Свечение вправо */
+        0 -5px 10px rgba(255, 215, 0, 0.3), /* Дополнительное свечение вверх на 5px */
+        3px 0 6px rgba(255, 215, 0, 0.2); /* Дополнительное свечение вправо на 3px */
+}
+
+/* Стили для часов */
+#clock {
+    font-weight: bold;
+    transition: font-size 0.3s ease-in-out; /* Плавный переход для размера шрифта */
+}
+
+/* Стили для точного Московского времени */
+.clock-container h1 {
+    margin: 0;
+    transition: font-size 0.3s ease-in-out;
+}
+
+/* Стили для управления размером шрифта */
+.font-size-control {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex: 2;
+}
+
+.font-size-control input[type="number"] {
+    width: 60px;
+    padding: 5px;
+    background: #808080;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+}
+
+.font-size-control input[type="number"]::-webkit-inner-spin-button,
+.font-size-control input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none; /* Убираем стандартные стрелки в Webkit */
+    margin: 0;
+}
+
+.font-size-control button {
+    width: 25px;
+    height: 25px;
+    background: #8a2be2;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.font-size-control button:hover {
+    background: #a757e8;
+}
+
+.font-size-control button:disabled {
+    background: #5e5e5e;
+    cursor: not-allowed;
+}
+
+/* Контейнер "текст посыла" */
+.message-container {
+    text-align: center;
+    background-color: rgba(68, 75, 88, 0.5);
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.2);
+    
+    border-radius: 10px;
+    overflow-y: auto;
+    transition: background-color 0.5s ease-in-out;
+    position: absolute;
+    top: 20%;
+    right: 60px;
+    width: calc(50% - 90px);
+    height: 70%;
+    padding: 20px; /* Оставляем существующий отступ */
+    min-height: 100px;
+    opacity: 1;
+    z-index: 1;
+    scrollbar-width: thin;
+    scrollbar-color: #a757e8 #5e2a8a;
+}
+
+.control-container {
+    position: absolute;
+    top: 20%;
+    right: 60px;
+    width: calc(50% - 90px);
+    
+    border-radius: 10px;
+    height: 70%;
+    padding: 20px; /* Оставляем существующий отступ */
+    min-height: 100px;
+}
+
+.message-container::-webkit-scrollbar {
+    width: 8px;
+}
+
+.message-container::-webkit-scrollbar-track {
+    background: #5e2a8a;
+    border-radius: 10px;
+}
+
+.message-container::-webkit-scrollbar-thumb {
+    background: #a757e8;
+    border-radius: 10px;
+}
+
+.message-container::-webkit-scrollbar-thumb:hover {
+    background: #bf7aff;
+}
+
+/* Убедимся, что текст внутри читаем */
+.message-container p,
+.countdown {
+    position: relative;
+    z-index: 1;
+    color: white;
+    margin: 0; /* Убираем стандартные отступы параграфа, если они мешают */
+    transition: font-size 0.3s ease-in-out;
+}
+
+#flame-container {
+    position: absolute;
+    top: 20%;
+    right: 60px;
+    width: calc(50% - 50px);
+    height: 78%;
+    z-index: 0; /* Свеча позади текста */
+}
+
+#flame-video {
+    position: absolute;
+    top: 0px;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 50%);
+    -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 1) 50%);
+}
+
+/* Стили для обратного отсчета */
+.countdown {
+    font-weight: bold;
+    color: #ffffff;
+}
+
+/* Стили для кнопки управления музыкой */
+/* Стили для кнопки управления музыкой */
+.music-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавляем color в transition */
+    z-index: 10;
+}
+
+.music-toggle.active {
+    background-color: #8a2be2;
+    opacity: 1;
+}
+
+.music-toggle.inactive {
+    background-color: #808080;
+    opacity: 0.5;
+}
+
+.music-toggle.inactive:hover {
+    background-color: #999999; /* Светлее серого при наведении в неактивном состоянии */
+    opacity: 0.5; /* Сохраняем прозрачность */
+}
+
+.music-toggle.active:hover {
+    background-color: #b06bff; /* Светлее фиолетового при наведении в активном состоянии */
+    opacity: 1; /* Сохраняем непрозрачность */
+}
+
+/* Стили для кнопки настроек (бутерброд) */
+.settings-toggle {
+    position: fixed;
+    bottom: 20px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    color: #252525; 
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавляем color в transition */
+    z-index: 10;
+}
+
+
+.settings-toggle.active {
+    background-color: #8a2be2;
+    color: #ffffff; /* Белый цвет текста при активации */
+}
+
+.settings-toggle.inactive {
+    background-color: #808080;
+    color: #252525;  /* Возвращаем стандартный цвет текста */
+}
+
+.settings-toggle.inactive:hover {
+    background-color: #999999; /* Светлее серого при наведении в неактивном состоянии */
+}
+
+.settings-toggle.active:hover {
+    background-color: #b06bff; /* Светлее фиолетового при наведении в активном состоянии */
+    color: #ffffff; /* Сохраняем белый цвет текста */
+}
+
+.music-toggle:hover {
+    background-color: #a757e8; /* Промежуточный цвет для наведения */
+}
+
+.music-toggle.active {
+    background-color: #8a2be2;
+    opacity: 1;
+}
+
+.music-toggle.inactive {
+    background-color: #808080;
+    opacity: 0.5;
+}
+
+/* Стили для кнопки настроек (бутерброд) */
+.settings-toggle {
+    position: fixed;
+    bottom: 20px;
+    width: 50px;
+    right: 25px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.3s;
+    z-index: 10;
+}
+
+.settings-toggle:hover {
+    background-color: #a757e8; /* Промежуточный цвет для наведения */
+}
+
+.settings-toggle.active {
+    background-color: #8a2be2;
+}
+
+.settings-toggle.inactive {
+    background-color: #808080;
+}
+
+/* Стили для попапа настроек */
+.settings-popup {
+    position: fixed;
+    bottom: 120px;
+    right: 100px;
+    height: auto; /* Изменяем с 500px на auto для гибкости */
+    background-color: #3a3f4b;
+    border: 1px solid #d5a1ff17;
+    border-radius: 10px;
+    padding: 15px;
+    font-family: 'Play';
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.4);
+    display: none;
+    z-index: 10;
+    opacity: 0; /* Начальная прозрачность */
+    transform: translateY(20px); /* Начальное смещение вниз */
+    transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out, background-color 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out, font-size 0.5s ease-in-out;
+    overflow-y: auto; /* Добавляем вертикальный скролл */
+    scrollbar-width: thin;
+    scrollbar-color: #a757e8 #5e2a8a;
+}
+
+.settings-popup::-webkit-scrollbar {
+    width: 8px;
+}
+
+.settings-popup::-webkit-scrollbar-track {
+    background: #5e2a8a;
+    border-radius: 10px;
+}
+
+.settings-popup::-webkit-scrollbar-thumb {
+    background: #a757e8;
+    border-radius: 10px;
+}
+
+.settings-popup::-webkit-scrollbar-thumb:hover {
+    background: #bf7aff;
+}
+
+/* Добавляем класс для видимого состояния */
+.settings-popup.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Стили для элементов настроек */
+.setting-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.setting-item label {
+    flex: 1;
+    margin-right: 10px;
+}
+
+/* Базовые стили для ползунка */
+/* Базовые стили для ползунка */
+.setting-item input[type="range"] {
+    flex: 2;
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 15px; /* Увеличиваем высоту контейнера, чтобы вместить ползунок */
+    background: #808080; /* Базовый серый фон */
+    border-radius: 5px;
+    outline: none;
+    position: relative;
+    transition: box-shadow 0.3s ease-in-out; /* Переход только для тени */
+    box-shadow: 0 0 10px rgba(167, 87, 232, 0.5);
+}
+
+/* Эффект при наведении */
+.setting-item input[type="range"]:hover {
+    box-shadow: 0 0 15px rgba(167, 87, 232, 0.8); /* Оставляем только тень */
+}
+
+/* Стили для трека в Webkit */
+.setting-item input[type="range"]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 5px; /* Трек остается 5px */
+    background: transparent;
+    border-radius: 5px;
+    position: relative;
+    top: 5px; /* Смещаем трек вниз, чтобы ползунок был полностью виден */
+}
+
+/* Стили для ползунка в Webkit */
+.setting-item input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    background: #8a2be2;
+    border: 1px solid #c484ff;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: -10px; /* Центрируем ползунок относительно трека */
+    position: relative;
+    z-index: 3;
+}
+/* Создаем псевдоэлемент для прогресса */
+.setting-item input[type="range"] {
+    overflow: hidden; /* Обрезаем лишнее */
+}
+
+.setting-item input[type="range"]::before {
+    content: '';
+    position: absolute;
+    top: 0px; /* Смещаем прогресс вниз, чтобы соответствовать треку */
+    left: 0;
+    height: 15px; /* Высота линии прогресса */
+    width: calc(var(--value) * 1%); /* Ширина до ползунка */
+    background: #a757e8; /* Исходный цвет */
+    border-radius: 5px 0 0 5px;
+    transition: background 0.3s ease-in-out; /* Плавный переход цвета */
+    z-index: 1; /* Ниже ползунка */
+}
+
+.setting-item input[type="range"]:hover::before {
+    background: #bf7aff; /* Цвет при наведении */
+}
+
+/* Стили для Firefox - трек */
+.setting-item input[type="range"]::-moz-range-track {
+    width: 100%;
+    height: 5px;
+    background: #808080;
+    border-radius: 5px;
+}
+
+/* Подсветка до ползунка в Firefox */
+.setting-item input[type="range"]::-moz-range-progress {
+    background: #a757e8;
+    height: 5px;
+    border-radius: 5px 0 0 5px;
+    transition: background 0.3s ease-in-out; /* Плавный переход */
+}
+
+/* Эффект при наведении в Firefox */
+.setting-item input[type="range"]:hover::-moz-range-progress {
+    background: #bf7aff;
+}
+
+/* Стили для ползунка в Firefox */
+.setting-item input[type="range"]::-moz-range-thumb {
+    width: 15px;
+    height: 15px;
+    background: #8a2be2;
+    border: 1px solid #c484ff;
+    border-radius: 50%;
+    cursor: pointer;
+    border: none;
+}
+
+/* Стили для чекбоксов */
+.setting-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #808080;
+    border-radius: 4px;
+    position: relative;
+}
+
+.setting-item input[type="checkbox"]:checked {
+    background: #8a2be2;
+}
+
+.setting-item input[type="checkbox"]:checked::before {
+    content: "✔";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 14px;
+}
+
+/* Тема "Вне посыла" */
+body.outside-posyl {
+    background-color: #1e1e3f;
+}
+
+body.outside-posyl .image-container {
+    background-color: #2a2a5a;
+}
+
+body.outside-posyl .clock-container {
+    background-color: #2a2a5a;
+}
+
+body.outside-posyl .message-container {
+    background-color: rgba(43, 43, 95, 0.5); /* Полупрозрачный #35356e */
+}
+
+body.outside-posyl .settings-popup {
+    background-color: #2a2a5a;
+}
+
+/* Тема "В посыле" */
+body.in-posyl {
+    background-color: #3c2f2f;
+}
+
+body.in-posyl .image-container {
+    background-color: #5c4033;
+}
+
+body.in-posyl .clock-container {
+    background-color: #5c4033;
+}
+
+body.in-posyl .message-container {
+    background-color: rgba(78, 53, 40, 0.5); /* Полупрозрачный #704b38 */
+}
+
+body.in-posyl .settings-popup {
+    background-color: #5c4033;
+}
+
+/* Стили для текста заповедей */
+.commandments-text {
+    color: white;
+    line-height: 1.5;
+    text-align: left;
+    text-indent: 0; /* Убираем возможные отступы */
+    padding-bottom: 15px;
+    margin: 0; /* Убираем внешние отступы */
+}
+
+.commandments-text p {
+    margin: 0; /* Убираем отступы у параграфов */
+    margin-bottom: 10px;
+    padding: 0;
+    padding-left: 6px;
+    padding-right: 6px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+    text-align: left;
+    
+    border: 1px solid #ffd90000;
+    border-radius: 8px;
+    transition: all 0.5s;
+}
+
+.commandments-text p:hover {
+    color: #ffd900;
+    background-color: #30303080;
+    border: 1px solid #ffd90042;
+    cursor: pointer;
+}
+
+/* Контейнер катрена */
+.quatrain-container {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 290px; /* Фиксированная ширина */
+    height: 160px; /* Фиксированная высота */
+    padding: 12px;
+    background-color: rgba(53, 53, 110, 0.5);
+    border-radius: 10px;
+    border: 1px solid rgba(80, 80, 150, 0.5);
+    color: white;
+    z-index: 5;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out, width 0.3s ease-in-out, height 0.3s ease-in-out, padding 0.3s ease-in-out, top 0.3s ease-in-out, right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Центрирование по вертикали */
+    align-items: flex-start; /* Выравнивание текста по левому краю */
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    overflow: hidden; /* Обрезает волну */
+    cursor: pointer;
+    box-sizing: border-box; /* Учитываем padding в размерах */
+}
+
+/* Подсветка при наведении */
+.quatrain-container:hover {
+    box-shadow: 0 0 10px rgba(167, 87, 232, 0.8);
+    background-color: rgba(53, 53, 110, 0.7);
+}
+
+/* Видимое состояние */
+.quatrain-container.visible {
+    opacity: 1;
+    transform: translateY(0);
+    display: flex; /* Включаем flex для видимого состояния */
+}
+
+/* Эффект перехода (волна) */
+.quatrain-transition {
+    position: absolute;
+    top: -50%; /* Сдвигаем волну вверх относительно контейнера */
+    left: -100%;
+    width: 70px;
+    height: 200%; /* Увеличиваем высоту */
+    background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.5) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    transform: rotate(45deg);
+    opacity: 0;
+    pointer-events: none;
+    transition: left 0.8s ease-in-out, opacity 0.3s ease-in-out;
+    z-index: 6;
+}
+
+/* Активное состояние волны */
+.quatrain-transition.active {
+    left: 350%; /* Движение за пределы справа */
+    opacity: 1;
+}
+
+/* Заголовок катрена */
+.quatrain-title {
+    margin: 0 0 5px 0;
+    font-size: 16px;
+    color: #ffd700;
+}
+
+/* Дата катрена */
+.quatrain-date {
+    font-size: 12px;
+    color: white;
+    display: block;
+    margin-bottom: 8px;
+}
+
+/* Текст катрена */
+.quatrain-text {
+    font-size: 16px;
+    line-height: 0.9; /* Компактный межстрочный интервал */
+    color: white;
+    margin: 0; /* Убираем внешние отступы */
+    padding: 0; /* Убираем внутренние отступы */
+    transform: scaleY(1); /* Сжатие текста по вертикали */
+    transform-origin: top; /* Сжатие начинается сверху */
+    display: block;
+    max-height: 100px; /* Ограничиваем высоту текста */
+    overflow: hidden; /* Обрезаем лишний текст */
+}
+
+/* Тема "В посыле" - скрываем контейнер */
+body.in-posyl .quatrain-container {
+    display: none;
+}
+
+/* Тема "Вне посыла" */
+body.outside-posyl .quatrain-container {
+    background-color: rgba(53, 53, 110, 0.5);
+    border-color: rgba(80, 80, 150, 0.5);
+}
+
+/* Стили для смартфонов (portrait) */
+@media (orientation: portrait) {
+    .quatrain-container {
+        width: 220px; /* Фиксированная ширина для мобильных */
+        height: 140px; /* Меньшая высота для портретной ориентации */
+        padding: 10px;
+        top: 5px;
+        right: 5px;
+    }
+
+    .quatrain-title {
+        font-size: 14px;
+    }
+
+    .quatrain-date {
+        font-size: 10px;
+        margin-bottom: 6px;
+    }
+
+    .quatrain-text {
+        font-size: 12px;
+        line-height: 0.9; /* Еще меньше для мобильных */
+        transform: scaleY(1.00); /* Усиленное сжатие */
+    }
+
+    /* Корректировка волны для меньшего контейнера */
+    .quatrain-transition {
+        width: 50px; /* Уменьшаем ширину волны для мобильных */
+        height: 200%; /* Увеличиваем высоту */
+    }
+}
+
+/* Стили для компьютеров (без ориентации или landscape) */
+/* Стили для компьютеров (без ориентации или landscape) */
+@media not all and (orientation: portrait) {
+    .image-container {
+        top: 20px;
+        left: 20px;
+        width: calc(50% - 50px);
+        height: calc(100vh - 40px); /* Высота до низа с учетом отступов 20px сверху и снизу */
+        bottom: 20px; /* Фиксированный отступ снизу */
+        transition: width 0.3s ease-in-out; /* Плавный переход только для ширины */
+    }
+
+    .clock-container {
+        position: absolute;
+        top: 20px;
+        right: 60px;
+        width: calc(50% - 90px);
+        height: calc((20% / 1.2) * 0.7);
+        padding: 20px;
+    }
+
+    .message-container {
+        position: absolute;
+        border: 1px solid rgba(255, 255, 255, 0.082);
+        top: calc(((20% / 1.2) * 0.8) + 60px);
+        right: 60px;
+        width: calc(50% - 90px);
+        height: calc(100vh - (((20% / 1.2) * 0.8) + 80px) - 122px); /* Высота до низа с учетом отступов */
+        padding: 20px;
+        font-weight: bold;
+        padding-bottom: 100px;
+        transition: height 0.3s ease-in-out;
+    }
+
+    .control-container {
+        position: absolute;
+        top: calc(((20% / 1.2) * 0.8) + 60px);
+        right: 60px;
+        width: calc(50% - 90px);
+        
+        border-radius: 10px;
+        height: calc(100vh - (((20% / 1.2) * 0.8) + 80px) - 122px);
+        padding: 20px; /* Оставляем существующий отступ */
+        padding-bottom: 100px;
+    }
+
+    #flame-container {
+        position: absolute;
+        top: calc(((20% / 1.2) * 0.8) + 60px);
+        right: 60px;
+        width: calc(50% - 50px);
+        height: var(--flame-container-height);
+        z-index: 0; /* Свеча позади текста */
+        transition: height 0.3s ease-in-out; /* Существующий переход */
+        mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+        -webkit-mask-image: linear-gradient(to bottom, rgba(0, 0, 0, 1) 70%, rgba(0, 0, 0, 0) 100%);
+    }
+
+    .music-toggle {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s ease-in-out, opacity 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавляем color в transition */
+        z-index: 10;
+    }
+
+    
+
+    .settings-toggle {
+        position: absolute;
+        bottom: 20px;
+        right: 25px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        display: flex;
+        color: #252525; 
+        justify-content: center;
+        align-items: center;
+        transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; /* Добавляем color в transition */
+        z-index: 10;
+    }
+
+    #clock {
+        font-size: 42px;
+    }
+
+    #date {
+        font-size: 22px;
+    }
+
+    .message-container p,
+.countdown {
+    margin-top: +16px;
+    font-size: 22px;
+}
+
+
+
+.settings-popup {
+    position: fixed;
+    width: 30%;
+    height: 65%; /* Устанавливаем высоту 70% от viewport */
+}
+
+/* Стили для полноэкранного режима */
+.fullscreen-compressed .image-container {
+    height: calc(100vh - 40px); /* Сохраняем высоту в полноэкранном режиме */
+    top: 20px;
+    left: 20px;
+    bottom: 20px;
+}
+
+.fullscreen-compressed .message-container {
+    height: calc(var(--message-container-height) * 1); /* Сжатие на 20% */
+}
+
+.fullscreen-compressed #flame-container {
+    height: calc(var(--flame-container-height) * 1); /* Сжатие на 20% */
+}
+
+
+
+    /* Медиа-запрос для ширины до 1600px */
+    @media screen and (max-width: 1600px) {
+        .image-container {
+            width: calc(55% - 50px);
+            height: calc(100vh - 40px); /* Сохраняем высоту */
+            top: 20px;
+            left: 20px;
+            bottom: 20px;
+        }
+
+        .clock-container {
+            width: calc(45% - 90px); /* Уменьшаем ширину */
+            height: calc((18% / 1.2) * 0.7 + 10px); /* Легкое уменьшение высоты */
+        }
+
+        .message-container {
+            width: calc(45% - 90px);
+            height: calc(100% - (((18% / 1.2) * 0.8) + 80px) - 135px); /* Та же высота, что в Full HD */
+        }
+
+        .control-container {
+            width: calc(45% - 90px);
+            height: calc(100% - (((18% / 1.2) * 0.8) + 80px) - 135px); /* Та же высота, что в Full HD */
+        }
+
+        #flame-container {
+            top: calc(((18% / 1.2) * 0.8) + 60px);
+            right: 60px;
+            width: calc(45% - 50px); /* Совпадает с message-container */
+            height: calc(90vh - (((18% / 1.2) * 0.8) + 80px) - 120px + 130px); /* Совпадает с message-container */
+        }
+
+        
+
+        .settings-toggle {
+            position: absolute;
+        }
+
+        #clock {
+            font-size: 38px;
+        }
+
+        #date {
+            font-size: 20px;
+        }
+
+        .message-container p,
+    .countdown {
+        margin-top: +16px;
+        font-size: 18px;
+    }
+
+    .settings-popup {
+        position: fixed;
+        width: 35%;
+    }
+
+    .music-toggle {
+        position: absolute;
+        
+    }
+
+    /* Стили для контейнера катренов */
+    .quatrain-container {
+        width: 270px; /* Уменьшаем ширину */
+        height: 150px; /* Уменьшаем высоту */
+        padding: 10px;
+        top: 8px;
+        right: 8px;
+    }
+
+    .quatrain-title {
+        font-size: 15px;
+    }
+
+    .quatrain-date {
+        font-size: 11px;
+        margin-bottom: 7px;
+    }
+
+    .quatrain-text {
+        font-size: 15px;
+        max-height: 95px;
+    }
+
+    .quatrain-transition {
+        width: 65px; /* Уменьшаем ширину волны */
+    }
+    }
+
+    /* Медиа-запрос для ширины до 1400px */
+    @media screen and (max-width: 1400px) {
+        .image-container {
+            width: calc(60% - 50px);
+            height: calc(100vh - 40px);
+            top: 20px;
+            left: 20px;
+            bottom: 20px;
+        }
+
+        .clock-container {
+            width: calc(40% - 90px); /* Еще меньше */
+            height: calc((16% / 1.2) * 0.7  + 14px); /* Уменьшаем высоту */
+        }
+
+        .message-container {
+            width: calc(40% - 90px);
+            height: calc(100vh - (((16% / 1.2) * 0.8) + 80px) - 145px); /* Та же высота */
+        }
+
+        .control-container {
+            width: calc(40% - 90px);
+            height: calc(100vh - (((16% / 1.2) * 0.8) + 80px) - 145px); /* Та же высота */
+        }
+
+        #flame-container {
+            top: calc(((16% / 1.2) * 0.8) + 60px);
+            right: 60px;
+            width: calc(40% - 50px); /* Совпадает с message-container */
+            height: calc(80vh - (((16% / 1.2) * 0.8) + 80px) - 120px + 140px); /* Совпадает с message-container */
+        }
+
+        .music-toggle {
+            position: absolute;
+            
+        }
+
+        .settings-toggle {
+            position: absolute;
+        }
+
+        #clock {
+            font-size: 30px;
+        }
+
+        #date {
+            font-size: 18px;
+        }
+
+        .message-container p,
+    .countdown {
+        margin-top: +16px;
+        font-size: 16px;
+    }
+
+    .settings-popup {
+        position: fixed;
+        width: 45%;
+    }
+
+    /* Стили для контейнера катренов */
+    .quatrain-container {
+        width: 250px; /* Дальше уменьшаем ширину */
+        height: 140px; /* Дальше уменьшаем высоту */
+        padding: 8px;
+        top: 6px;
+        right: 6px;
+    }
+
+    .quatrain-title {
+        font-size: 14px;
+    }
+
+    .quatrain-date {
+        font-size: 10px;
+        margin-bottom: 6px;
+    }
+
+    .quatrain-text {
+        font-size: 14px;
+        max-height: 90px;
+    }
+
+    .quatrain-transition {
+        width: 60px; /* Еще меньше ширина волны */
+    }
+    }
+
+    /* Медиа-запрос для ширины до 1200px */
+    @media screen and (max-width: 1200px) {
+        .image-container {
+            width: calc(65% - 50px);
+            height: calc(100vh - 40px);
+            top: 20px;
+            left: 20px;
+            bottom: 20px;
+        }
+
+        .clock-container {
+            width: calc(35% - 90px); /* Минимальная ширина */
+            height: calc((14% / 1.2) * 0.7 + 28px); /* Минимальная высота */
+        }
+
+        .message-container {
+            width: calc(35% - 90px);
+            height: calc(100% - (((14% / 1.2) * 0.8) + 80px) - 156px); /* Та же высота */
+        }
+
+        .control-container {
+            width: calc(35% - 90px);
+            height: calc(100% - (((14% / 1.2) * 0.8) + 80px) - 156px); /* Та же высота */
+        }
+
+        #flame-container {
+            top: calc(((14% / 1.2) * 0.8) + 60px);
+            right: 60px;
+            width: calc(35% - 50px); /* Совпадает с message-container */
+            height: calc(70vh - (((14% / 1.2) * 0.8) + 80px) - 120px + 150px); /* Совпадает с message-container */
+        }
+
+        .music-toggle {
+            position: absolute;
+            
+        }
+
+        .settings-toggle {
+            position: absolute;
+        }
+
+        #clock {
+            font-size: 30px;
+        }
+
+        #date {
+            font-size: 16px;
+        }
+
+        .message-container p,
+    .countdown {
+        margin-top: +14px;
+        font-size: 14px;
+    }
+
+    .settings-popup {
+        position: fixed;
+        width: 55%;
+    }
+
+    /* Стили для контейнера катренов */
+    .quatrain-container {
+        width: 230px; /* Максимально уменьшаем ширину */
+        height: 130px; /* Максимально уменьшаем высоту */
+        padding: 6px;
+        top: 5px;
+        right: 5px;
+    }
+
+    .quatrain-title {
+        font-size: 13px;
+    }
+
+    .quatrain-date {
+        font-size: 9px;
+        margin-bottom: 5px;
+    }
+
+    .quatrain-text {
+        font-size: 13px;
+        max-height: 85px;
+    }
+
+    .quatrain-transition {
+        width: 55px; /* Минимальная ширина волны */
+    }
+
+    
+
+
+    /* Медиа-запросы для меньших экранов */
+    @media screen and (max-width: 1600px) {
+        :root {
+            --image-container-height: calc(90vh - 40px);
+            --message-container-height: calc(90vh - (((18% / 1.2) * 0.8) + 80px) - 120px);
+            --flame-container-height: calc(90vh - (((18% / 1.2) * 0.8) + 80px) - 120px + 130px);
+        }
+    }
+
+    @media screen and (max-width: 1400px) {
+        :root {
+            --image-container-height: calc(80vh - 40px);
+            --message-container-height: calc(80vh - (((16% / 1.2) * 0.8) + 80px) - 120px);
+            --flame-container-height: calc(80vh - (((16% / 1.2) * 0.8) + 80px) - 120px + 140px);
+        }
+    }
+
+    @media screen and (max-width: 1200px) {
+        :root {
+            --image-container-height: calc(70vh - 40px);
+            --message-container-height: calc(70vh - (((14% / 1.2) * 0.8) + 80px) - 120px);
+            --flame-container-height: calc(70vh - (((14% / 1.2) * 0.8) + 80px) - 120px + 150px);
+        }
+    }
+    }
+
+    /* Остальные стили остаются без изменений */
+    .song-title {
+        font-size: 18px;
+    }
+
+   
+
+    .clock-container h1 {
+        font-size: 16px;
+    }
+
+    .message-container::after {
+        content: "";
+        display: block;
+        height: 660px; /* Высота отступа внизу */
+    }
+
+    
+
+   
+
+    .commandments-text {
+        font-size: 16px;
+    }
+}
+
+.resource-button {
+    display: block;
+    font-family: 'Play';
+    font-weight: bold;
+    font-size: 18px;
+    padding: 10px 15px;
+    background-color: #5e2a8a;
+    color: white;
+    text-decoration: none;
+    border: 1px solid #7f16d4;
+    border-radius: 20px;
+    text-align: center;
+    transition: background-color 0.3s ease-in-out, transform 0.2s;
+}
+
+.resource-button:hover {
+    background-color: #a757e8;
+    border: 1px solid #c988ff;
+    transform: scale(1.02);
+}
+
+.resource-button:active {
+    transform: scale(0.98);
+}
+
+/* Стили для смартфонов (portrait) */
+@media (orientation: portrait) {
+    .image-container {
+        top: 10px;
+        left: 10px;
+        width: calc(100% - 20px);
+        height: 49vh;
+    }
+
+    .song-title {
+        font-size: 14px;
+    }
+
+    .clock-container {
+        position: absolute;
+        top: calc(49vh + 20px);
+        left: 0px;
+        width: calc(100% - 20px);
+        height: calc((20% / 1.5) * 0.69);
+        padding: 10px;
+        padding-top: 5px;
+        border-radius: 0px;
+    }
+
+    #date {
+        font-size: 1.6vh;
+    }
+
+    #clock {
+        font-size: 3.6vh;
+    }
+
+    .clock-container h1 {
+        font-size: 1.5vh;
+    }
+
+    #flame-container {
+        position: absolute;
+        top: calc(50vh + ((20% / 1.5) * 0.7) + 35px);
+        left: 0px;
+        width: calc(100% - 0px);
+        height: calc(50vh - (((20% / 1.5) * 0.7) + 40px) - 90px);
+    }
+
+    #flame-video {
+        position: absolute;
+        top: 80px;
+    }
+
+    .message-container {
+        position: absolute;
+        top: calc(50vh + ((20% / 1.5) * 0.7) + 35px);
+        left: 0px;
+        width: calc(100% - 20px);
+        height: calc(50vh - (((20% / 1.5) * 0.7) + 40px) - 30px);
+        padding: 10px;
+        padding-top: 22px;
+        border-radius: 0px;
+        font-weight: bold;
+    }
+
+    .control-container {
+        position: absolute;
+        left: 0px;
+        top: calc(50vh + ((20% / 1.5) * 0.7) + 35px);
+        width: calc(100% - 20px);
+        height: calc(50vh - (((20% / 1.5) * 0.7) + 40px) - 30px);
+        padding: 10px;
+        padding-top: 22px;
+        border-radius: 0px;
+    }
+
+    /* Добавляем псевдоэлемент для отступа */
+    .message-container::after {
+        content: "";
+        display: block;
+        height: 360px; /* Высота отступа внизу */
+    }
+
+    .message-container p,
+    .countdown {
+        font-size: 1.75vh;
+    }
+
+    .settings-popup {
+        position: fixed;
+        width: calc(100% - 70px);
+        height: 72%; /* Устанавливаем высоту 70% от viewport */
+        left: 10px;
+        bottom: 20%;
+        box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .setting-item label {
+        font-size: 13.5px;
+    }
+
+    @media screen and (max-height: 1200px) {
+        .setting-item label {
+            font-size: 13.5px;
+        }
+    }
+
+    @media screen and (max-height: 2000px) {
+        .setting-item label {
+            font-size: 14px;
+        }
+    }
+
+    @media screen and (max-height: 2700px) {
+        .setting-item label {
+            font-size: 15px;
+        }
+    }
+
+    .music-toggle {
+        position: fixed;
+        left: 20px;
+        bottom: 20px;
+    }
+
+    .settings-toggle {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+    }
+
+    /* Стили для текста заповедей */
+.commandments-text {
+    font-size: 14px;
+}
+
+.resource-button {
+    font-size: 16px;
+}
+
+}
+
+/* Контейнер уведомления */
+.notification-container {
+    position: absolute;
+    left: 50%;
+    bottom: -100px; /* Начальная позиция ниже контейнера */
+    transform: translateX(-50%);
+    width: 400px;
+    padding: 15px 20px;
+    background-color: rgba(20, 20, 20, 0.9);
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    z-index: 100;
+    opacity: 0;
+    transition: all 0.5s ease-in-out; /* Плавный подъем за 0.5 секунды */
+}
+
+.notification-container.visible {
+    opacity: 1;
+    /* bottom задается через JS */
+}
+
+.notification-container.exiting {
+    bottom: 100%; /* Уходит вверх за пределы контейнера */
+    opacity: 0;
+    transition: all 2s ease-in-out; /* Уход вверх за 2 секунды */
+}
+
+/* Иконка вращающихся стрелок */
+.notification-icon {
+    font-size: 20px;
+    color: #cd90ff; /* Фиолетовый цвет */
+    animation: spin 1s linear infinite;
+}
+
+/* Текст уведомления */
+.notification-text {
+    font-size: 16px;
+    color: #cd90ff; /* Фиолетовый цвет */
+}
+
+/* Анимация вращения */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Стили для секций настроек */
+.settings-section {
+    margin-bottom: 15px;
+    background-color: rgba(200, 200, 200, 0.1);
+    border: 1px solid rgba(220, 220, 220, 0.3);
+    border-radius: 8px;
+    overflow: hidden;
+    transition: background-color 0.5s ease-in-out, border-color 0.5s ease-in-out;
+}
+
+.section-header {
+    padding: 10px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    background-color: rgba(220, 220, 220, 0.2);
+    transition: background-color 0.3s ease-in-out;
+}
+
+.section-header:hover {
+    background-color: rgba(220, 220, 220, 0.3);
+}
+
+.section-title {
+    font-weight: bold;
+}
+
+.section-toggle {
+    transition: transform 0.4s ease-in-out;
+}
+
+.section-collapsed .section-toggle {
+    transform: rotate(-90deg);
+}
+
+.section-content {
+    padding: 15px; /* Сохраняем базовый padding */
+    max-height: 1050px; /* Увеличиваем max-height, чтобы вместить весь контент */
+    overflow-y: hidden; /* Оставляем запрет скролла */
+    transition: all 0.4s ease-in-out;
+    opacity: 1;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex; /* Используем flex для управления содержимым */
+    flex-direction: column;
+}
+
+.section-collapsed .section-content {
+    max-height: 0;
+    padding: 0 15px;
+    overflow: hidden;
+    opacity: 0;
+}
+
+.section-content.animating {
+    overflow: hidden;
+}
+
+/* Добавляем отступ снизу для "Настройки" через псевдоэлемент */
+.section-content:last-child::after {
+    content: "";
+    display: block;
+    height: 15px; /* Отступ внизу для раздела "Настройки" */
+    flex-shrink: 0; /* Предотвращаем сжатие */
+}
+
+/* Стили для кнопок ресурсов */
+.resource-links {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%; /* Убеждаемся, что занимает всю ширину */
+}
+
+/* Убираем лишние отступы для раздела ссылок */
+.section-content:first-child {
+    padding-bottom: 15px; /* Симметричный отступ снизу для "Ссылки на основные ресурсы" */
+}
+
+
+
+/* Обновление тем "Вне посыла" и "В посыле" */
+body.outside-posyl .settings-section {
+    background-color: rgba(180, 180, 255, 0.1);
+    border-color: rgba(200, 200, 255, 0.3);
+}
+
+body.outside-posyl .section-header {
+    background-color: rgba(200, 200, 255, 0.2);
+}
+
+body.outside-posyl .section-header:hover {
+    background-color: rgba(200, 200, 255, 0.3);
+}
+
+body.in-posyl .settings-section {
+    background-color: rgba(255, 200, 200, 0.1);
+    border-color: rgba(255, 220, 220, 0.3);
+}
+
+body.in-posyl .section-header {
+    background-color: rgba(255, 220, 220, 0.2);
+}
+
+body.in-posyl .section-header:hover {
+    background-color: rgba(255, 220, 220, 0.3);
+}
+
+/* Убираем стили скроллбара */
+.section-content::-webkit-scrollbar {
+    display: none;
+}
+
+
+
